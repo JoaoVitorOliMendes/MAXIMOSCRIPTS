@@ -1,50 +1,41 @@
+from psdi.server import MXServer
 from psdi.mbo import MboConstants
 
-def selectAllRegistersThatCanBeDuplicated():
-    #bcsiteMboSet = mbo.getMboSet("JM_BCSITES")
-    #bcsiteMboSet.setWhere("ownerid = :assetuid and ownertable = 'JM_BC' and REPLICAR = 1 and REPLICADO = 0")
-    #bcsiteMboSet = mbo.getMboSet("$JM_BCSITES1", "JM_BCSITES", "ownerid = '" + str(mbo.getOwner().getString('ASSETUID')).replace(".","") + "' and ownertable = 'JM_BC' and replicar = 1 and replicado = 0")
-    bcsiteMboSet = mbo.getMboSet("$JM_BCSITES1", "JM_BCSITES", "ownerid = :assetuid and ownertable = 'JM_BC' and replicar = 1 and replicado = 0")
-    bcsiteMboSet.reset()
-
-    return bcsiteMboSet
-
-def replicateEntries():
-    pass
-
+if launchPoint == "SAVE" and onadd:
+    siteMboSet = MXServer.getMXServer().getMboSet('SITE', mbo.getUserInfo())
+    siteMboSet.setWhere('ORGID = \'' + mbo.getString("ORGID") + '\' AND active = 1 ')
+    siteMboSet.reset()
+    
+    if not siteMboSet.isEmpty():
+        siteMbo = siteMboSet.moveFirst()
+        bcsiteMboSet = mbo.getMboSet("JM_BCSITES")
+        
+        while siteMbo:
+            bcsiteMbo = bcsiteMboSet.add()
+            bcsiteMbo.setValue("SITEID", siteMbo.getString("SITEID"))
+            bcsiteMbo.setValue("OWNERTABLE", "JM_BC", MboConstants.NOACCESSCHECK)
+            bcsiteMbo.setValue('OWNERID', mbo.getInt("assetuid") ,mbo.NOACCESSCHECK) 
+            siteMbo = siteMboSet.moveNext()
+        bcsiteMboSet.save()
 
 if launchPoint == "UPDATE":
-    bcsiteMboSet = selectAllRegistersThatCanBeDuplicated()
-
-    if not bcsiteMboSet.isEmpty():
-        bcsiteMbo = bcsiteMboSet.getMbo(0)
-        service.error("configure","BlankMsg", [bcsiteMboSet.getName()])
-        assetSet = mbo.getOwner().getThisMboSet()
-
-        assetNumVal = assetSet.getString('ASSETNUM')
-        descriptionVal = assetSet.getString('DESCRIPTION')
-        orgIdVal = assetSet.getString('ORGID')
-        statusVal = assetSet.getString('STATUS')
-        jmApproverVal = assetSet.getString('JM_APPROVER')
-        jmTypeVal = assetSet.getString('JM_TYPE')
-        jmAssetNumVal = assetSet.getString('JM_ASSETNUM')
-
-        while bcsiteMbo:
-            
-            #bcsiteMbo.setValue("REPLICADO", 1 ,mbo.NOACCESSCHECK)
-            #bcsiteMbo.setValue("REPLICAR", 0 ,mbo.NOACCESSCHECK)
-            
-            sideid = bcsiteMbo.getString("SITEID")
-            
-            assetMbo = assetSet.addAtEnd()
-            assetMbo.setValue("SITEID", sideid ,mbo.NOACCESSCHECK)
-            assetMbo.setValue('ASSETNUM', assetNumVal + " - " + sideid , mbo.NOACCESSCHECK)
-            assetMbo.setValue('DESCRIPTION', descriptionVal , mbo.NOACCESSCHECK)
-            assetMbo.setValue('ORGID', orgIdVal, mbo.NOACCESSCHECK)
-            assetMbo.setValue('STATUS', statusVal, mbo.NOACCESSCHECK)
-            assetMbo.setValue('JM_APPROVER', jmApproverVal, mbo.NOACCESSCHECK)
-            assetMbo.setValue('JM_TYPE', jmTypeVal, mbo.NOACCESSCHECK)
-            assetMbo.setValue('JM_ASSETNUM', jmAssetNumVal, mbo.NOACCESSCHECK)
-            assetMbo.setValue('JM_RECORDTYPE', "JM_BC", mbo.NOACCESSCHECK)
-            bcsiteMbo = bcsiteMboSet.moveNext()
-            assetSet.save()
+    assetSet = mbo.getOwner().getThisMboSet()
+    bcsiteSet = mbo.getThisMboSet()
+    bcsiteMbo = bcsiteSet.moveFirst()
+    if bcsiteMbo.getString("REPLICAR"):
+        bcsiteMbo.setValue("REPLICADO", 1 ,mbo.NOACCESSCHECK)
+        bcsiteMbo.setValue("REPLICAR", 0 ,mbo.NOACCESSCHECK)
+        
+        siteid = bcsiteMbo.getString("SITEID")
+        
+        assetMbo = assetSet.add()
+        assetMbo.setValue("SITEID", siteid ,mbo.NOACCESSCHECK)
+        assetMbo.setValue('ASSETNUM', siteid[0:3] + " - " + assetSet.getString('ASSETNUM'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('DESCRIPTION', assetSet.getString('DESCRIPTION') , mbo.NOACCESSCHECK)
+        assetMbo.setValue('ORGID', assetSet.getString('ORGID'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('STATUS', assetSet.getString('STATUS'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('JM_APPROVER', assetSet.getString('JM_APPROVER'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('JM_TYPE', assetSet.getString('JM_TYPE'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('JM_ASSETNUM', assetSet.getString('JM_ASSETNUM'), mbo.NOACCESSCHECK)
+        assetMbo.setValue('JM_RECORDTYPE', "JM_BC", mbo.NOACCESSCHECK)
+        assetSet.save()
