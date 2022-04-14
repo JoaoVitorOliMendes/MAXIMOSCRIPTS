@@ -1,0 +1,2 @@
+-- Show details about maximo tables
+select * from maxattribute where objectname = 'asset' and attributename = 'description'
