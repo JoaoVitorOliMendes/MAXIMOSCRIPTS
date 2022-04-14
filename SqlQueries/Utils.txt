@@ -3,3 +3,8 @@ select * from maxattribute where objectname = 'asset' and attributename = 'descr
 
 -- Reports Table
 select * from reportdesign
+
+-- Reports
+-- 1. Contruir Query
+-- 2. Referenciar em Script
+-- 3. Construir tabela
