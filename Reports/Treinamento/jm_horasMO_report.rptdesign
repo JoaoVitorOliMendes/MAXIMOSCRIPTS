@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="comments">IBM Confidential
+
+OCO Source Materials
+
+5724-M19
+
+(C) COPYRIGHT IBM CORP. 2006
+
+The source code for this program is not published or otherwise
+divested of its trade secrets, irrespective of what has been
+deposited with the U.S. Copyright Office.
+
+09-19764@000</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.3.1.v201309091055 Build &lt;4.3.1.v20130917-1035></property>
+    <html-property name="description">This template will create a report having a single header with multiple rows of data.</html-property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.com.ibm.tivoli.maximo.report.script);
+
+mxReportScriptContext = MXReportScriptContext.initialize(reportContext);]]></method>
+    <method name="beforeFactory"><![CDATA[// Remove page break intervals from PDF output
+if ( (reportContext.getParameterValue("usepagebreaks") == "false")|| reportContext.getOutputFormat() == "pdf" ) {
+	// Give each table in the report a name, and add the names to the list below, e.g. ["mainTable", "childTable1"]
+	var tableListing = ["mainTable"];
+	for each(var tableName in tableListing) {
+		var table = reportContext.getReportRunnable().designHandle.getDesignHandle().findElement(tableName)
+		if (table != null)
+		{
+			table.setProperty("pageBreakInterval", 0);
+		}
+	}
+}]]></method>
+    <method name="afterFactory"><![CDATA[MXReportScriptContext.close();]]></method>
+    <property name="theme">MaximoSystemLibrary.maximoTheme</property>
+    <text-property name="displayName">Tivoli Maximo List Template</text-property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">MaximoSystemLibrary.rptlibrary</property>
+            <property name="namespace">MaximoSystemLibrary</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="where" id="25">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">1=1</value>
+            </simple-property-list>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="appname" id="200">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="paramdelimiter" id="202">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="paramstring" id="201">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="usepagebreaks" id="342">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">true</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="maximoDataSource" id="64" extends="MaximoSystemLibrary.maximoDataSource"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataSet" id="5">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">HorasUtil</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">HorasPlan</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">MoPlan</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">CategUtil</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">HorasUtil</property>
+                </structure>
+                <structure>
+                    <property name="columnName">HorasPlan</property>
+                </structure>
+                <structure>
+                    <property name="columnName">MoPlan</property>
+                </structure>
+                <structure>
+                    <property name="columnName">CategUtil</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">HorasUtil</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">HorasPlan</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">MoPlan</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">CategUtil</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">maximoDataSource</property>
+            <method name="open"><![CDATA[maximoDataSet = MXReportDataSetProvider.create(this.getDataSource().getName(), this.getName());
+maximoDataSet.open();
+
+var sqlText = new String();
+
+// Add query to sqlText variable.
+sqlText = "select WorkUtil.HorasUtil , WorkPlan.HorasPlan,Workplan.MoPlan, WorkUtil.CategUtil from"
++ " (select sum(wplabor.laborhrs) as HorasPlan , wplabor.laborcode as MoPlan, wplabor.CRAFT as CategPlan"
++ " from wplabor,labtrans"
++ " where wplabor.laborcode = labtrans.laborcode"
++ " group by wplabor.laborcode, wplabor.CRAFT) WorkPlan,"
++ " (select LABORCODE as Mo_ult,sum (REGULARHRS) as HorasUtil, CRAFT as CategUtil"
++ " from labtrans"
++ " group by LABORCODE,CRAFT , month(STARTDATE), month(FINISHDATE)) WorkUtil"
++ " where WorkPlan.MoPlan = WorkUtil.Mo_ult"
+// Include the Maximo where clause
+// " where " + params["where"]
+;
+
+maximoDataSet.setQuery(sqlText);]]></method>
+            <method name="fetch"><![CDATA[if (!maximoDataSet.fetch())
+	return (false);
+
+// Add a line for each output column
+// The specific get method should match the data type of the output column.
+row["HorasUtil"] = maximoDataSet.getString("HorasUtil");
+row["HorasPlan"] = maximoDataSet.getString("HorasPlan");
+row["MoPlan"] = maximoDataSet.getString("MoPlan");
+row["CategUtil"] = maximoDataSet.getString("CategUtil");
+
+return (true);]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab-cell" id="343">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="344">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="maximoLandscape" id="47" extends="MaximoSystemLibrary.maximoLandscape">
+            <overridden-values>
+                <ref-entry baseId="304" name="NewGrid2" id="304"/>
+                <ref-entry baseId="305" id="305"/>
+                <ref-entry baseId="306" id="306"/>
+                <ref-entry baseId="307" id="307"/>
+                <ref-entry baseId="308" id="308"/>
+                <ref-entry baseId="309" id="309"/>
+                <ref-entry baseId="310" name="NewImage" id="310"/>
+                <ref-entry baseId="322" name="NewGrid" id="322"/>
+                <ref-entry baseId="323" id="323"/>
+                <ref-entry baseId="324" id="324"/>
+                <ref-entry baseId="325" id="325"/>
+                <ref-entry baseId="326" id="326"/>
+                <ref-entry baseId="328" name="NewText" id="328"/>
+                <ref-entry baseId="327" id="327"/>
+                <ref-entry baseId="329" name="NewGrid1" id="329"/>
+                <ref-entry baseId="330" id="330"/>
+                <ref-entry baseId="331" id="331"/>
+                <ref-entry baseId="332" id="332"/>
+                <ref-entry baseId="333" id="333"/>
+                <ref-entry baseId="334" id="334"/>
+                <ref-entry baseId="335" name="NewAutoText" id="335"/>
+                <ref-entry baseId="336" id="336"/>
+                <ref-entry baseId="337" name="NewText1" id="337"/>
+                <ref-entry baseId="338" id="338"/>
+                <ref-entry baseId="339" name="NewAutoText1" id="339"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="345">
+            <property name="dataSet">dataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">HorasUtil</property>
+                    <text-property name="displayName">HorasUtil</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["HorasUtil"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">HorasPlan</property>
+                    <text-property name="displayName">HorasPlan</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["HorasPlan"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">MoPlan</property>
+                    <text-property name="displayName">MoPlan</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["MoPlan"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">CategUtil</property>
+                    <text-property name="displayName">CategUtil</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CategUtil"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="369"/>
+            <column id="370"/>
+            <column id="371"/>
+            <column id="372"/>
+            <header>
+                <row id="373">
+                    <cell id="374">
+                        <property name="colSpan">4</property>
+                        <property name="rowSpan">1</property>
+                        <text id="378">
+                            <property name="style">title</property>
+                            <property name="fontSize">12pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">center</property>
+                            <property name="contentType">plain</property>
+                            <text-property name="content"><![CDATA[Mão de Obra Planejada por categoria]]></text-property>
+                        </text>
+                    </cell>
+                </row>
+                <row id="346">
+                    <cell id="347">
+                        <label id="348">
+                            <property name="fontSize">9pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Horas Apropriadas</text-property>
+                        </label>
+                    </cell>
+                    <cell id="349">
+                        <label id="350">
+                            <property name="fontSize">9pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Horas Planejadas</text-property>
+                        </label>
+                    </cell>
+                    <cell id="351">
+                        <label id="352">
+                            <property name="fontSize">9pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Codigo Mão de Obra</text-property>
+                        </label>
+                    </cell>
+                    <cell id="353">
+                        <label id="354">
+                            <property name="fontSize">9pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Categoria</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="355">
+                    <cell id="356">
+                        <data id="357">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">HorasUtil</property>
+                        </data>
+                    </cell>
+                    <cell id="358">
+                        <data id="359">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">HorasPlan</property>
+                        </data>
+                    </cell>
+                    <cell id="360">
+                        <data id="361">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">MoPlan</property>
+                        </data>
+                    </cell>
+                    <cell id="362">
+                        <data id="363">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">CategUtil</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="364">
+                    <cell id="365"/>
+                    <cell id="366"/>
+                    <cell id="367"/>
+                    <cell id="368"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>
