@@ -113,13 +113,17 @@ def addHours():
 #AftSave lp - add, update, delete | after save
 if launchPoint == 'AFTSAVE':
     addHours()
-    
+
+
+
+#Allow Object Creation lp 
 if launchPoint == 'ALLOWOBJCREATION':
     if mboset.getOwner().toBeAdded():
         service.error('JM_WORKLOG', 'JM_NeedToSave')
 
 
 
+#Allow Object Deletion lp 
 if launchPoint == 'ALLOWDELETE':
     for i in range(7):
         if mbo.getString('JM_WORKSTATUS' + str(i)) == 'SUBMITTED':
@@ -147,6 +151,7 @@ def setAllDaysStatus(status):
         else:
             mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
 
+#Attribute lps for status - validade
 if launchPoint == 'JM_WORKSTATUS0':
     submitWorkEntry(0)
 elif launchPoint == 'JM_WORKSTATUS1':
@@ -173,6 +178,7 @@ def checkStatus(number):
     else:
         mbo.setValue('JM_WORKSTATUS' + str(number), 'CANCELLED', mbo.NOACCESSCHECK)
 
+#Attribute lps for actual hours - validade
 if launchPoint == 'JM_ACTUAL0':
     checkStatus(0)
 elif launchPoint == 'JM_ACTUAL1':
