@@ -67,7 +67,7 @@ def validateEntryStatusBeforeSubmit():
                 service.error('JM_WORKLOG', 'JM_NeedSubmitt')
             wEntryMbo = wEntryMboSet.moveNext()
 '''
-#Save lp - add, update | before save
+'''Save lp - add, update | before save'''
 if launchPoint == 'SAVE':
     if onadd:
         validateLaborcodeWeeknumber()
@@ -76,7 +76,7 @@ if launchPoint == 'SAVE':
 
 
 
-#Init lp
+'''Init lp'''
 if launchPoint == 'INIT':
     if onadd:
         #Set laborcode as users laborcode
@@ -94,7 +94,7 @@ if launchPoint == 'INIT':
 
 
 
-#JM_STATUS attribute launch point - validate
+'''JM_STATUS attribute launch point - validate'''
 #Set all JM_WORKENTRY status to parent status
 if launchPoint == 'JM_STATUS':
     wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
