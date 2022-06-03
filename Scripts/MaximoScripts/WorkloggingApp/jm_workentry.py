@@ -8,76 +8,7 @@ from psdi.server import MXServer
 from java.util import Calendar
 from java.text import SimpleDateFormat
 
-def setAllDaysStatus(status):
-    for i in range(7):
-        if mbo.getFloat('JM_ACTUAL' + str(i)) != 0:
-            if status == 'CANCELLED':
-                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
-                mbo.setValue('JM_ACTUAL' + str(i), 0, mbo.NOACCESSCHECK|mbo.NOACTION)
-            elif mbo.getString('JM_WORKSTATUS' + str(i)) != 'APPROVED':
-                mbo.setValue('JM_WORKSTATUS' + str(i), status, mbo.NOACCESSCHECK)
-        else:
-            mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
-
-def checkStatus(number):
-    if mbo.getFloat('JM_ACTUAL' + str(number)) != 0:
-        mbo.setValue('JM_WORKSTATUS' + str(number), 'IN PROGRESS', mbo.NOACCESSCHECK)
-    else:
-        mbo.setValue('JM_WORKSTATUS' + str(number), 'CANCELLED', mbo.NOACCESSCHECK)
-
-def validateStatus():
-    if mbo.getString('JM_WORKSTATUS') == 'SUBMITTED':
-        for i in range(7):
-            if mbo.getFloat('JM_ACTUAL' + str(i)) == 0:
-                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
-            if mbo.getString('JM_WORKSTATUS' + str(i)) not in ('CANCELLED', 'SUBMITTED'):
-                service.error('JM_WORKLOG', 'JM_CannotApproveRow')
-    elif mbo.getString('JM_WORKSTATUS') == 'CANCELLED':
-        for i in range(7):
-            if mbo.getString('JM_WORKSTATUS' + str(i)) == 'SUBMITTED':
-                service.error('JM_WORKLOG', 'JM_CannotCancelApprovedRow')
-    for i in range(7):
-        if mbo.getString('JM_WORKSTATUS' + str(i)) == 'SUBMITTED':
-            if mbo.getFloat('JM_ACTUAL' + str(i)) == 0:
-                service.error('JM_WORKLOG', 'JM_CannotSubmitZeroHours')
-
-def addHours():
-    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
-    wLogMboSet = mbo.getMboSet('JM_WORKLOGGING')
-    
-    if wEntryMboSet:
-        totalSum = 0
-        for i in range(7):
-            wEntryMbo = wEntryMboSet.moveFirst()
-            wLogMbo = wLogMboSet.moveFirst()
-            sum = 0
-        
-            while wEntryMbo:
-                sum += wEntryMbo.getFloat('JM_ACTUAL' + str(i))
-                wEntryMbo = wEntryMboSet.moveNext()
-            
-            wLogMbo.setValue('JM_TOTAL' + str(i), sum,  mbo.NOACCESSCHECK)
-            totalSum += sum
-        wLogMbo.setValue('JM_TOTACTUALHRS', totalSum,  mbo.NOACCESSCHECK)
-        wLogMboSet.save()
-
-def addEntryHours():
-    sum = 0
-    
-    for i in range(7):
-        sum += mbo.getFloat('JM_ACTUAL' + str(i))
-        
-    mbo.setValue('JM_TOTACTUALHRS', sum, mbo.NOACCESSCHECK)
-    
-    #Converting decimal to minutes - 0.50 = 30 min
-    #   *Not necessary since maximo duration type already converts it back
-    #minutesString = sum - int(sum)
-    #minutes = str(int(round(minutesString * 60)))
-    
-    #hours = str(int(sum))
-    #finalString = hours + ':' + minutes
-    #mbo.setValue('JM_TOTACTUALHRS', finalString, mbo.NOACCESSCHECK)
-
+#If entry is approved the fields become readonly
 def setEntryVisibility():
     if mbo.getString('JM_WORKSTATUS') == 'APPROVED':
         mbo.setFlag(mbo.READONLY, True)
@@ -90,13 +21,35 @@ def setEntryVisibility():
                 mbo.setFieldFlag('JM_COMMENTS' + str(i), mbo.READONLY, True)
                 mbo.setFieldFlag('JM_WORKSTATUS' + str(i), mbo.READONLY, True)
 
-def submitWorkEntry(fieldNumber):
-    condition = mbo.getString('JM_WORKSTATUS' + str(fieldNumber)) == 'SUBMITTED'
-    mbo.setFieldFlag('JM_ACTUAL' + str(fieldNumber), mbo.REQUIRED, condition)
-    mbo.setFieldFlag('JM_WORKLOCATION' + str(fieldNumber), mbo.REQUIRED, condition)
-    mbo.setFieldFlag('JM_REMARKSTS' + str(fieldNumber), mbo.REQUIRED, condition)
-    mbo.setFieldFlag('JM_WORKSTATUS' + str(fieldNumber), mbo.REQUIRED, condition)
+#Init lp
+if launchPoint == 'INIT':
+    if onadd:
+        for i in range(7):
+            mbo.setValue('JM_ACTUAL' + str(i), 0,  mbo.NOACCESSCHECK|mbo.NOVALIDATION|mbo.NOACTION)
+        mbo.setValue('JM_WORKNUMBER', mbo.getOwner().getString('JM_WORKNUMBER'), mbo.NOACCESSCHECK)
+    setEntryVisibility()
 
+
+
+#Add entry total hours
+def addEntryHours():
+    sum = 0
+    for i in range(7):
+        sum += mbo.getFloat('JM_ACTUAL' + str(i))
+    mbo.setValue('JM_TOTACTUALHRS', sum, mbo.NOACCESSCHECK)
+#Validate status before approving
+def validateStatus():
+    if mbo.getString('JM_WORKSTATUS') == 'APPROVED':
+        for i in range(7):
+            if mbo.getFloat('JM_ACTUAL' + str(i)) == 0:
+                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
+            if mbo.getString('JM_WORKSTATUS' + str(i)) not in ('CANCELLED', 'APPROVED'):
+                service.error('JM_WORKLOG', 'JM_CannotApproveRow')
+    elif mbo.getString('JM_WORKSTATUS') == 'CANCELLED':
+        for i in range(7):
+            if mbo.getString('JM_WORKSTATUS' + str(i)) == 'APPROVED':
+                service.error('JM_WORKLOG', 'JM_CannotCancelApprovedRow')
+#Add day to labtrans
 def submitDayToLabTrans():
     laborMboSet = MXServer.getMXServer().getMboSet('LABTRANS', mbo.getUserInfo())
     wLogMboSet = mbo.getMboSet('JM_WORKLOGGING')
@@ -125,19 +78,37 @@ def submitDayToLabTrans():
 
     laborMboSet.save()
 
-#Init lp
-if launchPoint == 'INIT':
-    if onadd:
-        for i in range(7):
-            mbo.setValue('JM_ACTUAL' + str(i), 0,  mbo.NOACCESSCHECK|mbo.NOVALIDATION|mbo.NOACTION)
-        mbo.setValue('JM_WORKNUMBER', mbo.getOwner().getString('JM_WORKNUMBER'), mbo.NOACCESSCHECK)
-    setEntryVisibility()
-
 #Save lp - add, update | before save
 if launchPoint == 'SAVE':
     addEntryHours()
     validateStatus()
-    #submitDayToLabTrans()
+    '''
+        TODO
+        submitDayToLabTrans()
+    '''
+
+
+
+#Add hours from each day of the week then add full total
+def addHours():
+    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
+    wLogMboSet = mbo.getMboSet('JM_WORKLOGGING')
+    
+    if wEntryMboSet:
+        totalSum = 0
+        for i in range(7):
+            wEntryMbo = wEntryMboSet.moveFirst()
+            wLogMbo = wLogMboSet.moveFirst()
+            sum = 0
+        
+            while wEntryMbo:
+                sum += wEntryMbo.getFloat('JM_ACTUAL' + str(i))
+                wEntryMbo = wEntryMboSet.moveNext()
+            
+            wLogMbo.setValue('JM_TOTAL' + str(i), sum,  mbo.NOACCESSCHECK)
+            totalSum += sum
+        wLogMbo.setValue('JM_TOTACTUALHRS', totalSum,  mbo.NOACCESSCHECK)
+        wLogMboSet.save()
 
 #AftSave lp - add, update, delete | after save
 if launchPoint == 'AFTSAVE':
@@ -147,10 +118,34 @@ if launchPoint == 'ALLOWOBJCREATION':
     if mboset.getOwner().toBeAdded():
         service.error('JM_WORKLOG', 'JM_NeedToSave')
 
+
+
 if launchPoint == 'ALLOWDELETE':
     for i in range(7):
         if mbo.getString('JM_WORKSTATUS' + str(i)) == 'SUBMITTED':
             service.error('JM_WORKLOG', 'JM_CannotDeleteRow')
+
+
+
+#If day is submitted the fields become required
+def submitWorkEntry(fieldNumber):
+    condition = mbo.getString('JM_WORKSTATUS' + str(fieldNumber)) == 'SUBMITTED'
+    mbo.setFieldFlag('JM_ACTUAL' + str(fieldNumber), mbo.REQUIRED, condition)
+    mbo.setFieldFlag('JM_WORKLOCATION' + str(fieldNumber), mbo.REQUIRED, condition)
+    mbo.setFieldFlag('JM_REMARKSTS' + str(fieldNumber), mbo.REQUIRED, condition)
+    mbo.setFieldFlag('JM_WORKSTATUS' + str(fieldNumber), mbo.REQUIRED, condition)
+
+#Set days status based on week status
+def setAllDaysStatus(status):
+    for i in range(7):
+        if mbo.getFloat('JM_ACTUAL' + str(i)) != 0:
+            if status == 'CANCELLED':
+                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
+                mbo.setValue('JM_ACTUAL' + str(i), 0, mbo.NOACCESSCHECK|mbo.NOACTION) #NoAction since there is an attribute lp on the field
+            elif mbo.getString('JM_WORKSTATUS' + str(i)) != 'APPROVED':
+                mbo.setValue('JM_WORKSTATUS' + str(i), status, mbo.NOACCESSCHECK)
+        else:
+            mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
 
 if launchPoint == 'JM_WORKSTATUS0':
     submitWorkEntry(0)
@@ -168,6 +163,15 @@ elif launchPoint == 'JM_WORKSTATUS6':
     submitWorkEntry(6)
 elif launchPoint == 'JM_WORKSTATUS':
     setAllDaysStatus(str(mbovalue))
+
+
+
+#On changing the actual hours update the day status
+def checkStatus(number):
+    if mbo.getFloat('JM_ACTUAL' + str(number)) != 0:
+        mbo.setValue('JM_WORKSTATUS' + str(number), 'IN PROGRESS', mbo.NOACCESSCHECK)
+    else:
+        mbo.setValue('JM_WORKSTATUS' + str(number), 'CANCELLED', mbo.NOACCESSCHECK)
 
 if launchPoint == 'JM_ACTUAL0':
     checkStatus(0)
