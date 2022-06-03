@@ -8,15 +8,7 @@ from java.util import Calendar
 from java.text import SimpleDateFormat
 from psdi.server import MXServer
 
-def setAllEntriesStatus(status):
-    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
-    wEntryMbo = wEntryMboSet.moveFirst()
-    while wEntryMbo:
-        if wEntryMboSet.getString('JM_WORKSTATUS') != 'APPROVED':
-            wEntryMboSet.setValue('JM_WORKSTATUS', status, mbo.NOACCESSCHECK)
-        wEntryMbo = wEntryMboSet.moveNext()
-    #wEntryMboSet.save()
-
+#Validade if there's no logging with laborcode and weeknumber that is desired to add
 def validateLaborcodeWeeknumber():
     laborCode = mbo.getString('JM_LABORCODE')
     weekNumber = mbo.getString('JM_WEEKNUMBER')
@@ -38,6 +30,7 @@ def validateLaborcodeWeeknumber():
         else:
             defineDays()
 
+#Insert days of the week based on startdate
 def defineDays():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
 
@@ -53,6 +46,7 @@ def defineDays():
     #Sunday - Start at next week
     mbo.setValue('JM_DAY0', dateFormat.format(cal.getTime()))
 
+#Prevent user to save a record from the future
 def validateFutureDate():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
     cal = Calendar.getInstance()
@@ -64,6 +58,9 @@ def validateFutureDate():
     if today.getTime() < cal.getTime().getTime():
         service.error('JM_WORKLOG', 'JM_FutureDate')
 
+'''
+TODO - delete
+
 def validateEntryStatusBeforeSubmit():
     wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
     wEntryMbo = wEntryMboSet.moveFirst()
@@ -72,13 +69,16 @@ def validateEntryStatusBeforeSubmit():
             if wEntryMbo.getString('JM_WORKSTATUS') not in ('SUBMITTED', 'CANCELLED'):
                 service.error('JM_WORKLOG', 'JM_NeedSubmitt')
             wEntryMbo = wEntryMboSet.moveNext()
+'''
 
 #Save lp - add, update | before save
 if launchPoint == 'SAVE':
     if onadd:
         validateLaborcodeWeeknumber()
     validateFutureDate()
-    validateEntryStatusBeforeSubmit()
+    '''validateEntryStatusBeforeSubmit()'''
+
+
 
 #Init lp
 if launchPoint == 'INIT':
@@ -96,5 +96,14 @@ if launchPoint == 'INIT':
         mbo.setFieldFlag('JM_WEEKNUMBER',mbo.READONLY, True)
         mbo.setFieldFlag('JM_LABORCODE',mbo.READONLY, True)
 
+
+
+#JM_STATUS attribute launch point - validate
+#Set all JM_WORKENTRY status to parent status
 if launchPoint == 'JM_STATUS':
-    setAllEntriesStatus(str(mbovalue))
+    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
+    wEntryMbo = wEntryMboSet.moveFirst()
+    while wEntryMbo:
+        if wEntryMboSet.getString('JM_WORKSTATUS') != 'APPROVED':
+            wEntryMboSet.setValue('JM_WORKSTATUS', str(mbovalue), mbo.NOACCESSCHECK)
+        wEntryMbo = wEntryMboSet.moveNext()
