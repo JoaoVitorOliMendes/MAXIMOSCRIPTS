@@ -4,9 +4,18 @@
 # Autor: João Vitor de Oliveira Mendes
 # ------------------------------------------------------
 
-from psdi.server import MXServer
 from java.util import Calendar
 from java.text import SimpleDateFormat
+from psdi.server import MXServer
+
+def setAllEntriesStatus(status):
+    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
+    wEntryMbo = wEntryMboSet.moveFirst()
+    while wEntryMbo:
+        if wEntryMboSet.getString('JM_WORKSTATUS') != 'APPROVED':
+            wEntryMboSet.setValue('JM_WORKSTATUS', status, mbo.NOACCESSCHECK)
+        wEntryMbo = wEntryMboSet.moveNext()
+    #wEntryMboSet.save()
 
 def validateLaborcodeWeeknumber():
     laborCode = mbo.getString('JM_LABORCODE')
@@ -44,13 +53,35 @@ def defineDays():
     #Sunday - Start at next week
     mbo.setValue('JM_DAY0', dateFormat.format(cal.getTime()))
 
+def validateFutureDate():
+    maxDate = mbo.getDate('JM_WEEKSTARTDATE')
+    cal = Calendar.getInstance()
+    
+    cal.setTime(maxDate)
+    
+    today = MXServer.getMXServer().getDate();
+    
+    if today.getTime() < cal.getTime().getTime():
+        service.error('JM_WORKLOG', 'JM_FutureDate')
+
+def validateEntryStatusBeforeSubmit():
+    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
+    wEntryMbo = wEntryMboSet.moveFirst()
+    if mbo.getString('JM_STATUS') == 'SUBMITTED':
+        while wEntryMbo:
+            if wEntryMbo.getString('JM_WORKSTATUS') not in ('SUBMITTED', 'CANCELLED'):
+                service.error('JM_WORKLOG', 'JM_NeedSubmitt')
+            wEntryMbo = wEntryMboSet.moveNext()
+
 #Save lp - add, update | before save
-if launchPoint == "SAVE":
+if launchPoint == 'SAVE':
     if onadd:
         validateLaborcodeWeeknumber()
+    validateFutureDate()
+    validateEntryStatusBeforeSubmit()
 
 #Init lp
-if launchPoint == "INIT":
+if launchPoint == 'INIT':
     if onadd:
         #Set laborcode as users laborcode
         laborMboSet = mbo.getMboSet('$LABOR', 'LABOR', 'PERSONID = \'' + mbo.getUserName() + '\'')
@@ -63,3 +94,7 @@ if launchPoint == "INIT":
             service.error('JM_WORKLOG', 'JM_UserHasNoLabor')
     else:
         mbo.setFieldFlag('JM_WEEKNUMBER',mbo.READONLY, True)
+        mbo.setFieldFlag('JM_LABORCODE',mbo.READONLY, True)
+
+if launchPoint == 'JM_STATUS':
+    setAllEntriesStatus(str(mbovalue))
