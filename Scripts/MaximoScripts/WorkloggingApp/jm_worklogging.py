@@ -29,7 +29,6 @@ def validateLaborcodeWeeknumber():
             service.error('JM_WORKLOG', 'JM_WorkLogAlreadyExists')
         else:
             defineDays()
-
 #Insert days of the week based on startdate
 def defineDays():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
@@ -45,7 +44,6 @@ def defineDays():
         cal.add(Calendar.DATE, 1)
     #Sunday - Start at next week
     mbo.setValue('JM_DAY0', dateFormat.format(cal.getTime()))
-
 #Prevent user to save a record from the future
 def validateFutureDate():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
@@ -57,7 +55,6 @@ def validateFutureDate():
     
     if today.getTime() < cal.getTime().getTime():
         service.error('JM_WORKLOG', 'JM_FutureDate')
-
 '''
 TODO - delete
 
@@ -70,7 +67,6 @@ def validateEntryStatusBeforeSubmit():
                 service.error('JM_WORKLOG', 'JM_NeedSubmitt')
             wEntryMbo = wEntryMboSet.moveNext()
 '''
-
 #Save lp - add, update | before save
 if launchPoint == 'SAVE':
     if onadd:
