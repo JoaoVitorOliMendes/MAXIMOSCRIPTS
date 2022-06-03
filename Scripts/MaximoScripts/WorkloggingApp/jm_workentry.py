@@ -21,7 +21,7 @@ def setEntryVisibility():
                 mbo.setFieldFlag('JM_COMMENTS' + str(i), mbo.READONLY, True)
                 mbo.setFieldFlag('JM_WORKSTATUS' + str(i), mbo.READONLY, True)
 
-#Init lp
+'''Init lp'''
 if launchPoint == 'INIT':
     if onadd:
         for i in range(7):
@@ -78,7 +78,7 @@ def submitDayToLabTrans():
 
     laborMboSet.save()
 
-#Save lp - add, update | before save
+'''Save lp - add, update | before save'''
 if launchPoint == 'SAVE':
     addEntryHours()
     validateStatus()
@@ -110,20 +110,20 @@ def addHours():
         wLogMbo.setValue('JM_TOTACTUALHRS', totalSum,  mbo.NOACCESSCHECK)
         wLogMboSet.save()
 
-#AftSave lp - add, update, delete | after save
+'''AftSave lp - add, update, delete | after save'''
 if launchPoint == 'AFTSAVE':
     addHours()
 
 
 
-#Allow Object Creation lp 
+'''Allow Object Creation lp '''
 if launchPoint == 'ALLOWOBJCREATION':
     if mboset.getOwner().toBeAdded():
         service.error('JM_WORKLOG', 'JM_NeedToSave')
 
 
 
-#Allow Object Deletion lp 
+'''Allow Object Deletion lp '''
 if launchPoint == 'ALLOWDELETE':
     for i in range(7):
         if mbo.getString('JM_WORKSTATUS' + str(i)) == 'SUBMITTED':
@@ -151,7 +151,7 @@ def setAllDaysStatus(status):
         else:
             mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK)
 
-#Attribute lps for status - validade
+'''Attribute lps for status - validade'''
 if launchPoint == 'JM_WORKSTATUS0':
     submitWorkEntry(0)
 elif launchPoint == 'JM_WORKSTATUS1':
@@ -178,7 +178,7 @@ def checkStatus(number):
     else:
         mbo.setValue('JM_WORKSTATUS' + str(number), 'CANCELLED', mbo.NOACCESSCHECK)
 
-#Attribute lps for actual hours - validade
+'''Attribute lps for actual hours - validade'''
 if launchPoint == 'JM_ACTUAL0':
     checkStatus(0)
 elif launchPoint == 'JM_ACTUAL1':
