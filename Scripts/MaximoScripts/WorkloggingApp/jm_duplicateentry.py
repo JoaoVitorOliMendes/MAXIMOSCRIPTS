@@ -1,8 +1,15 @@
+# ------------------------------------------------------
+# MaximoCon, segunda, jun 07, 2022 09:00
+# Objetivo: Script to duplicate previous week work entries on current ongoing week
+# Autor: João Vitor de Oliveira Mendes
+# ------------------------------------------------------
+
 from java.text import SimpleDateFormat
 from java.util import Calendar
 from java.lang import System
 from psdi.server import MXServer
 
+#Duplicate work entries
 def duplicate():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
     calStartDay = Calendar.getInstance()
@@ -15,7 +22,7 @@ def duplicate():
     calToday = Calendar.getInstance()
     calToday.setTime(today)
     dayOfTheWeek = calToday.get(Calendar.DAY_OF_WEEK)
-    calToday.add(Calendar.DATE, 2 - (dayOfTheWeek % 7))
+    calToday.add(Calendar.DATE, 2 - dayOfTheWeek)
     
     if calToday.getTime().getTime() < calStartDay.getTime().getTime() or calToday.getTime().getTime() > calEndDay.getTime().getTime():
         service.error('JM_WORKLOG', 'JM_NotCurrentWeek')
@@ -44,5 +51,6 @@ def duplicate():
                 return
     service.error('JM_WORKLOG','JM_NoMoreLines')
 
+'''JM_DUPLICATEENTRY action lp - binded on 'copy from previous week' button in JM_WORKLOGGING '''
 if launchPoint == 'JM_DUPLICATEENTRY':
     duplicate()
