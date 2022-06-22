@@ -35,7 +35,7 @@ def defineDays():
     maxDate = mbo.getDate('JM_WEEKSTARTDATE')
 
     cal = Calendar.getInstance()
-    dateFormat = SimpleDateFormat("MMM dd, YYYY");
+    dateFormat = SimpleDateFormat("MMM dd, yyyy");
 
     cal.setTime(maxDate)
 
@@ -56,26 +56,13 @@ def validateFutureDate():
     today = MXServer.getMXServer().getDate();
     
     if today.getTime() < cal.getTime().getTime():
-        service.error('JM_WORKLOG', 'JM_FutureDate')
-'''
-TODO - delete
-
-def validateEntryStatusBeforeSubmit():
-    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
-    wEntryMbo = wEntryMboSet.moveFirst()
-    if mbo.getString('JM_STATUS') == 'SUBMITTED':
-        while wEntryMbo:
-            if wEntryMbo.getString('JM_WORKSTATUS') not in ('SUBMITTED', 'CANCELLED'):
-                service.error('JM_WORKLOG', 'JM_NeedSubmitt')
-            wEntryMbo = wEntryMboSet.moveNext()
-'''
+        service.error('JM_WORKLOG', 'JM_FutureDate', [mbo.getString('JM_WEEKSTARTDATE')])
 
 '''Save lp - add, update | before save'''
 if launchPoint == 'SAVE':
     if onadd:
         validateLaborcodeWeeknumber()
     validateFutureDate()
-    '''validateEntryStatusBeforeSubmit()'''
 
 '''Init lp'''
 if launchPoint == 'INIT':
@@ -98,7 +85,18 @@ if launchPoint == 'INIT':
 if launchPoint == 'JM_STATUS':
     wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
     wEntryMbo = wEntryMboSet.moveFirst()
+    status = str(mbovalue)
     while wEntryMbo:
-        if wEntryMboSet.getString('JM_WORKSTATUS') != 'APPROVED':
-            wEntryMboSet.setValue('JM_WORKSTATUS', str(mbovalue), mbo.NOACCESSCHECK)
+        if wEntryMbo.getString('JM_WORKSTATUS') != 'APPROVED':
+            wEntryMbo.setValue('JM_WORKSTATUS', status, mbo.NOACCESSCHECK)
         wEntryMbo = wEntryMboSet.moveNext()
+
+'''SAVE_DELETE launch point - before save | delete'''
+#Set all JM_WORKENTRY status to parent status
+if launchPoint == 'SAVE_DELETE':
+    wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
+    wEntryMbo = wEntryMboSet.moveFirst()
+    while wEntryMbo:
+        wEntryMbo.delete()
+        wEntryMbo = wEntryMboSet.moveNext()
+    wEntryMboSet.save
