@@ -75,20 +75,21 @@ def setAllDaysStatus(status):
             if mbo.getString('JM_WORKSTATUS' + str(i)) not in ('APPROVED', 'SUBMITTED', 'CANCELLED'):
                 service.error('JM_WORKLOG', 'JM_CannotApproveRow')
     for i in range(7):
-        if status == 'NOT STARTED':
-            mbo.setValue('JM_WORKSTATUS' + str(i), 'NOT STARTED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
-            mbo.setValue('JM_ACTUAL' + str(i), 0, mbo.NOACCESSCHECK|mbo.NOVALIDATION)
-            submitWorkEntry(i)
-        elif mbo.getFloat('JM_ACTUAL' + str(i)) != 0:
-            if status == 'CANCELLED':
-                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
+        if mbo.getString('JM_WORKSTATUS' + str(i)) != 'APPROVED':
+            if status == 'NOT STARTED':
+                mbo.setValue('JM_WORKSTATUS' + str(i), 'NOT STARTED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
                 mbo.setValue('JM_ACTUAL' + str(i), 0, mbo.NOACCESSCHECK|mbo.NOVALIDATION)
-                #mbo.NOVALIDATION since there is an attribute lp on the field
-            elif mbo.getString('JM_WORKSTATUS' + str(i)) != 'APPROVED':
-                mbo.setValue('JM_WORKSTATUS' + str(i), status, mbo.NOACCESSCHECK|mbo.NOVALIDATION)
                 submitWorkEntry(i)
-        else:
-            mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
+            elif mbo.getFloat('JM_ACTUAL' + str(i)) != 0:
+                if status == 'CANCELLED':
+                        mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
+                        mbo.setValue('JM_ACTUAL' + str(i), 0, mbo.NOACCESSCHECK|mbo.NOVALIDATION)
+                        #mbo.NOVALIDATION since there is an attribute lp on the field
+                else:
+                    mbo.setValue('JM_WORKSTATUS' + str(i), status, mbo.NOACCESSCHECK|mbo.NOVALIDATION)
+                    submitWorkEntry(i)
+            else:
+                mbo.setValue('JM_WORKSTATUS' + str(i), 'CANCELLED', mbo.NOACCESSCHECK|mbo.NOVALIDATION)
 
 #On changing the actual hours update the day status
 def checkStatus(number):
@@ -138,11 +139,11 @@ def validateStatus():
 #Add day to labtrans
 def submitDayToLabTrans():
     laborMboSet = MXServer.getMXServer().getMboSet('LABTRANS', mbo.getUserInfo())
-    
     for i in range(7):
         mboValue = mbo.getMboValue('JM_WORKSTATUS' + str(i))
         previous = mboValue.getPreviousValue().asString()
         current = mboValue.getCurrentValue().asString()
+        appname = mbo.getThisMboSet().getParentApp()
         if previous == 'SUBMITTED' and current not in ('APPROVED', 'SUBMITTED'):
             laborMboSet.setWhere(
                 'JM_ENTRYID = \'' + mbo.getString('JM_WORKENTRYID') + str(i) + '\''
@@ -152,14 +153,13 @@ def submitDayToLabTrans():
             if laborMboFirst:
                 laborMboFirst.delete()
                 laborMboSet.save()
-        elif previous == 'SUBMITTED' and current == 'APPROVED' and app:
+        elif previous == 'SUBMITTED' and current == 'APPROVED' and appname:
             laborMboSet.setWhere(
                 'JM_ENTRYID = \'' + mbo.getString('JM_WORKENTRYID') + str(i) + '\''
             )
             laborMboSet.reset()
             laborMboFirst = laborMboSet.moveFirst()
             if laborMboFirst:
-                service.error(str(laborMboFirst.getBoolean('GENAPPRSERVRECEIPT')), '')
                 if not laborMboFirst.getBoolean('GENAPPRSERVRECEIPT'):
                     laborMboFirst.setValue('GENAPPRSERVRECEIPT', 1, mbo.NOACCESSCHECK)
                     laborMboSet.save()
@@ -229,10 +229,12 @@ if launchPoint == 'SAVE_DELETE':
                 laborMboSet.save()
 
 '''AftSave lp - add, update, delete | after save'''
-if launchPoint == 'AFTSAVE' and not mbo.getOwner().toBeDeleted():
+if launchPoint == 'AFTSAVE' and mbo.getOwner() and not mbo.getOwner().toBeDeleted():
     wEntryMboSet = mbo.getMboSet('JM_WORKENTRY')
     wEntryMbo = wEntryMboSet.moveFirst()
-    wLogMboSet = mbo.getMboSet('JM_WORKLOGGING')
+    wLogMboSet = MXServer.getMXServer().getMboSet('JM_WORKLOGGING', mbo.getUserInfo())
+    wLogMboSet.setWhere('JM_WORKNUMBER = \'' + mbo.getString('JM_WORKNUMBER') + '\'')
+    wLogMboSet.reset()
     wLogMbo = wLogMboSet.moveFirst()
     
     qtt = 0
