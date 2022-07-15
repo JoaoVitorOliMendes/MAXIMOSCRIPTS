@@ -104,8 +104,12 @@ if ( (reportContext.getParameterValue("usepagebreaks") == "false")|| reportConte
         <scalar-parameter name="site" id="1445">
             <text-property name="promptText">Site</text-property>
             <property name="valueType">static</property>
+            <property name="isRequired">false</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant"></value>
+            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -116,6 +120,21 @@ if ( (reportContext.getParameterValue("usepagebreaks") == "false")|| reportConte
         <scalar-parameter name="datainicial" id="1446">
             <text-property name="promptText">Date de début</text-property>
             <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">dateTime</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Short Date</property>
+                <property name="pattern">Short Date</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="datafinal" id="1571">
+            <text-property name="promptText">Date de fin</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
             <property name="dataType">dateTime</property>
             <property name="distinct">true</property>
             <list-property name="selectionList"/>
@@ -392,9 +411,18 @@ sqlText = " select "
 + "		left join LOCHIERARCHY		"
 + "			on SR.LOCATION = LOCHIERARCHY.LOCATION and SR.SITEID = LOCHIERARCHY.SITEID	"
 
-+ " WHERE " + MXReportSqlFormat.createParamWhereClause("SR.SITEID", params["site"]) 
-if(params["datainicial"].value) {
++ " WHERE 1=1"
+if(params["site"].value) {
+	sqlText = sqlText + " AND " + MXReportSqlFormat.createParamWhereClause("SR.SITEID", params["site"])
+}else {
+	sqlText = sqlText + " AND SR.SITEID in (select siteid from site where orgid = 'GEROWSNZ')"
+}
+if(params["datainicial"].value &amp;&amp; params["datafinal"].value) {
+	sqlText = sqlText + " AND SR.REPORTDATE between " + MXReportSqlFormat.getStartDayTimestampFunction(params["datainicial"]) + " and " + MXReportSqlFormat.getStartDayTimestampFunction(params["datafinal"])
+}else if(params["datainicial"].value) {
 	sqlText = sqlText + " AND SR.REPORTDATE >=" + MXReportSqlFormat.getStartDayTimestampFunction(params["datainicial"])
+}else if(params["datafinal"].value){
+	sqlText = sqlText + " AND SR.REPORTDATE <=" + MXReportSqlFormat.getStartDayTimestampFunction(params["datafinal"])
 }
 ;
 maximoDataSet.setQuery(sqlText);]]></method>
@@ -521,6 +549,9 @@ return (true);]]></method>
     </page-setup>
     <body>
         <table id="1447">
+            <property name="pageBreakAfter">avoid</property>
+            <property name="pageBreakBefore">avoid</property>
+            <property name="pageBreakInside">avoid</property>
             <property name="dataSet">dataSet</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -625,7 +656,20 @@ return (true);]]></method>
                     <expression name="expression" type="javascript">dataSetRow["Bloc"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">Aggregation</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">COUNT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["TICKETID"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
+            <property name="pageBreakInterval">0</property>
             <column id="1536"/>
             <column id="1537"/>
             <column id="1538"/>
