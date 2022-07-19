@@ -101,22 +101,6 @@ if ( (reportContext.getParameterValue("usepagebreaks") == "false")|| reportConte
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
-        <scalar-parameter name="site" id="1445">
-            <text-property name="promptText">Site</text-property>
-            <property name="valueType">static</property>
-            <property name="isRequired">false</property>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant"></value>
-            </simple-property-list>
-            <list-property name="selectionList"/>
-            <property name="paramType">simple</property>
-            <property name="controlType">text-box</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="datainicial" id="1446">
             <text-property name="promptText">Date de début</text-property>
             <property name="valueType">static</property>
@@ -411,12 +395,7 @@ sqlText = " select "
 + "		left join LOCHIERARCHY		"
 + "			on SR.LOCATION = LOCHIERARCHY.LOCATION and SR.SITEID = LOCHIERARCHY.SITEID	"
 
-+ " WHERE 1=1"
-if(params["site"].value) {
-	sqlText = sqlText + " AND " + MXReportSqlFormat.createParamWhereClause("SR.SITEID", params["site"])
-}else {
-	sqlText = sqlText + " AND SR.SITEID in (select siteid from site where orgid = 'GEROWSNZ')"
-}
++ " WHERE SR.SITEID in (select siteid from site where orgid = 'GEROWSNZ')"
 if(params["datainicial"].value &amp;&amp; params["datafinal"].value) {
 	sqlText = sqlText + " AND SR.REPORTDATE between " + MXReportSqlFormat.getStartDayTimestampFunction(params["datainicial"]) + " and " + MXReportSqlFormat.getStartDayTimestampFunction(params["datafinal"])
 }else if(params["datainicial"].value) {
