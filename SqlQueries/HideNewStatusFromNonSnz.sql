@@ -1,37 +1,30 @@
-select * from synonymdomain    
-where domainid='LOCASSETSTATUS'
-    and orgid='GEROWSNZ'
-    and (
+select * from synonymdomain
+where domainid = 'LOCASSETSTATUS'
+    and
+    (
+        (
+            :user not in 
             (
-                :user not in 
+                select userid from groupuser where UPPER(groupname) like 'SNZ%MNT' and userid not in 
                 (
-                    select distinct userid from groupuser where UPPER(groupname) in 
-                    (
-                        select GROUPNAME from SITEAUTH where SITEID='SNZ-MNT'
-                    )
-                    and UPPER(groupname) not in 
-                    (
-                        select GROUPNAME from SITEAUTH where SITEID not in ('SNZ-MNT')
-                    )
+                    select userid from groupuser where UPPER(groupname) not in 
+                    ('SNZ_METH_MNT', 'SNZ_TECH_MNT', 'SNZ_ADMIN_MNT','MAXEVERYONE', 'MAXADMIN', 'MAXDEFLTREG')
                 )
-            )
-            or
-            (
-                (
-                    :user in 
-                    (
-                        select distinct userid from groupuser where UPPER(groupname) in 
-                        (
-                            select GROUPNAME from SITEAUTH where SITEID='SNZ-MNT'
-                        )
-                        and UPPER(groupname) not in 
-                        (
-                            select GROUPNAME from SITEAUTH where SITEID not in ('SNZ-MNT')
-                        )
-                    )
-                )
-                and siteid='SNZ-MNT'
             )
         )
-
-domainid='LOCASSETSTATUS' and orgid='GEROWSNZ' and ((:user not in (select distinct userid from groupuser where UPPER(groupname) in (select GROUPNAME from SITEAUTH where SITEID='SNZ-MNT') and UPPER(groupname) not in (select GROUPNAME from SITEAUTH where SITEID not in ('SNZ-MNT')))) or ((:user in (select distinct userid from groupuser where UPPER(groupname) in (select GROUPNAME from SITEAUTH where SITEID='SNZ-MNT') and UPPER(groupname) not in (select GROUPNAME from SITEAUTH where SITEID not in ('SNZ-MNT')))) and siteid='SNZ-MNT'))
+        or
+        (
+            (
+                :user in
+                (
+                    select userid from groupuser where UPPER(groupname) like 'SNZ%MNT' and userid not in 
+                    (
+                        select userid from groupuser where UPPER(groupname) not in 
+                        ('SNZ_METH_MNT', 'SNZ_TECH_MNT', 'SNZ_ADMIN_MNT','MAXEVERYONE', 'MAXADMIN', 'MAXDEFLTREG')
+                    )
+                )
+            )
+            and orgid = 'GEROWSNZ'
+            and siteid = 'SNZ-MNT'
+        )
+    )
