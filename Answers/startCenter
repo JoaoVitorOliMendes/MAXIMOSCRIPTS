@@ -2,3 +2,4 @@ Recent applications - https://www.ibm.com/support/pages/where-my-recent-applicat
 Set number of recent applications - mxe.webclient.ShowQueriesInToolbar
 Set system navbar - mxe.webclient.systemNavBar
 Number of queries on sidemenu - mxe.webclient.maxNavbarQueryLimit
+Select action on toolbar - mxe.webclient.showSelectActionInToolbar
