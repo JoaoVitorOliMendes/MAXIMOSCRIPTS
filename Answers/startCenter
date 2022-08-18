@@ -1,5 +1,5 @@
 Recent applications - https://www.ibm.com/support/pages/where-my-recent-applications-list-stored-and-how-do-we-delete-it
-Set number of recent applications - mxe.webclient.ShowQueriesInToolbar
+Set number of recent applications - webclient.maxRecentApps
 Set system navbar - mxe.webclient.systemNavBar
 Number of queries on sidemenu - mxe.webclient.maxNavbarQueryLimit
 Select action on toolbar - mxe.webclient.showSelectActionInToolbar
