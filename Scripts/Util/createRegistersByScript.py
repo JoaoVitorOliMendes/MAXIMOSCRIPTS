@@ -9,8 +9,9 @@ data = [
     }
 ]
 
+mboSet = MXServer.getMXServer().getMboSet('XXXXX', mbo.getUserInfo())
+
 for i in data:
-    mboSet = MXServer.getMXServer().getMboSet('XXXXX', mbo.getUserInfo())
     if i["XXXX"] and i["ZZZZ"]:
         mbo = mboSet.add()
         mbo.setValue('XXXX', i["XXXX"], mbo.NOACCESSCHECK)
