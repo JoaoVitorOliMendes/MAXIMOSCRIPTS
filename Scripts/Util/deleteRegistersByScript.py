@@ -2,10 +2,10 @@ from java.lang import System
 from java.util import Calendar
 from psdi.server import MXServer
 
-mboSet = MXServer.getMXServer().getMboSet('GE_WOGEMBA', mbo.getUserInfo())
+mboSet = MXServer.getMXServer().getMboSet('XXXXX', mbo.getUserInfo())
 mbo = mboSet.moveFirst()
 while mbo:
-    if mbo.getInt('WOCOUNT') == 1:
+    if mbo.getInt('XXXXX') == 0:
         mbo.delete()
     mbo = mboSet.moveNext()
 mboSet.save()
