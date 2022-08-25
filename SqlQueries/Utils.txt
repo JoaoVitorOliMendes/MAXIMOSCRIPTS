@@ -4,6 +4,9 @@ select * from maxattribute where objectname = 'asset' and attributename = 'descr
 -- Reports Table
 select * from reportdesign
 
+-- Escalation status table
+select * from escstatus
+
 -- Reports
 -- 1. Contruir Query
 -- 2. Referenciar em Script
