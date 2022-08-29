@@ -12,7 +12,7 @@ WFINSTANCE - Acompanha quais registros ja foram iniciados o workflow
 WFINTERACTION - Armazena as `interaction` box de cada workflow
 WFNODE - Bloco de comando definido no workflow designer (XCOORDINATE, YCOORDINATE)
 WFNOTIFICATION - Define a notificação a ser enviada no processo de um node
-WFPROCESS - Acompanha os nodes de processo do workflow
+WFPROCESS - Armazena os nodes de processo do workflow
 WFREVISION - Relaciona revisões a sub revisões
 WFSTART - Indica o node de start do workflow
 WFSTOP - Indica o node de stop do workflow
