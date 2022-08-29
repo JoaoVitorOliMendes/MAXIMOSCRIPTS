@@ -9,7 +9,7 @@ WFEXPBUILDER - Non-Persistent Object for Expression Builder
 WFHELP - Controls showing of Workflow Help
 WFINPUT - Indica o node em que é necessário um input do usuário
 WFINSTANCE - Acompanha quais registros ja foram iniciados o workflow
-WFINTERACTION - Acomanha as `interaction` box de cada workflow
+WFINTERACTION - Armazena as `interaction` box de cada workflow
 WFNODE - Bloco de comando definido no workflow designer (XCOORDINATE, YCOORDINATE)
 WFNOTIFICATION - Define a notificação a ser enviada no processo de um node
 WFPROCESS - Acompanha os nodes de processo do workflow
