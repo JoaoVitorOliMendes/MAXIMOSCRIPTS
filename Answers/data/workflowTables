@@ -1,0 +1,23 @@
+WFACTION - Registra as ações que são definidas em cada node do workflow designer
+WFACTIVATION
+WFAPPTOOLBAR - Define qual icone / qual workflow da toolbar de actions está associado a cada aplicação
+WFASGNGROUP
+WFASSIGNMENT - Cada associação registrada no workflow
+WFCALLSTACK - Ordem em que é executado cada processo
+WFCONDITION - Armazena as condições para a execução de um node
+WFEXPBUILDER - Non-Persistent Object for Expression Builder
+WFHELP - Controls showing of Workflow Help
+WFINPUT - Indica o node em que é necessário um input do usuário
+WFINSTANCE - Acompanha quais registros ja foram iniciados o workflow
+WFINTERACTION - Acomanha as `interaction` box de cada workflow
+WFNODE - Bloco de comando definido no workflow designer (XCOORDINATE, YCOORDINATE)
+WFNOTIFICATION - Define a notificação a ser enviada no processo de um node
+WFPROCESS - Acompanha os nodes de processo do workflow
+WFREVISION - Relaciona revisões a sub revisões
+WFSTART - Indica o node de start do workflow
+WFSTOP - Indica o node de stop do workflow
+WFSUBPROCESS - Indica os subprocessos do workflow
+WFTASK - É um tipo específico de wfnode
+WFTOOLBAR - Workflow Toolbar Calculation
+WFTRANSACTION - Salva todas as transações ocorridas em um registro
+WFWAITLIST - List of events for a Workflow Wait Node
