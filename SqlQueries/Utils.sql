@@ -11,3 +11,6 @@ select * from escstatus
 -- 1. Contruir Query
 -- 2. Referenciar em Script
 -- 3. Construir tabela
+
+-- Massive sql guide
+-- https://bportaluri.com/wp-content/downloads/docs/db2y0e70.pdf
