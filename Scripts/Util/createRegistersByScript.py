@@ -1,5 +1,4 @@
-from java.lang import System
-from java.util import Calendar
+from psdi.mbo import MboConstants
 from psdi.server import MXServer
 
 data = [
@@ -9,11 +8,11 @@ data = [
     }
 ]
 
-mboSet = MXServer.getMXServer().getMboSet('XXXXX', mbo.getUserInfo())
+xMboSet = MXServer.getMXServer().getMboSet('XXXXX', MXServer.getMXServer().getSystemUserInfo())
 
 for i in data:
     if i["XXXX"] and i["ZZZZ"]:
-        mbo = mboSet.add()
-        mbo.setValue('XXXX', i["XXXX"], mbo.NOACCESSCHECK)
-        mbo.setValue('ZZZZ', i["ZZZZ"], mbo.NOACCESSCHECK)
-        mboSet.save()
+        xMbo = xMboSet.add()
+        xMbo.setValue('XXXX', i["XXXX"], MboConstants.NOACCESSCHECK)
+        xMbo.setValue('ZZZZ', i["ZZZZ"], MboConstants.NOACCESSCHECK)
+xMboSet.save()
