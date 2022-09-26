@@ -1,4 +1,5 @@
 from java.util import Calendar
+from psdi.server import MXServer
 
 today = MXServer.getMXServer().getDate()
 calToday = Calendar.getInstance()
