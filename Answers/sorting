@@ -1,2 +1,3 @@
 Status dropdown - https://www.ibm.com/support/pages/change-status-sort-order-maximo
 Sort lookup values - <table orderby="#####">
+Sort alphanumeric as number - order by length(col), col - https://stackoverflow.com/questions/32104281/db2-length-function
