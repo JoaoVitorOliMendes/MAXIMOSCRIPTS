@@ -1,0 +1,1 @@
+woLogMboSet = mbo.getWorkLog()
