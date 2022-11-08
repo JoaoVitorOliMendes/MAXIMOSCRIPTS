@@ -1,0 +1,1 @@
+ dialogId = service.webclientsession().getCurrentPageId()
