@@ -1,2 +1,4 @@
 Highlight table rows in overview - [https://bportaluri.com/2021/04/highlight-table-rows-conditionally.html / https://interprosoft.com/library/maximotimes/maximo/premium/color-code-workorder-tracking-list-items/]
 Aplication restriction **Does not appear in app where clause - https://ontracks.com/application-restrictions/
+Retorna as linhas selecionadas pelo checkbox - https://umaranis.com/2021/09/04/maximo-how-to-fetch-selected-records-from-an-automation-script/
+Desseleciona linhas selecionadas - mboSetSelection.unselectAll()
