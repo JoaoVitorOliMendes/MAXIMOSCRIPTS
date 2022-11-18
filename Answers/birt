@@ -5,3 +5,4 @@ Birt installing - https://bentley.sharepoint.com/sites/Ontracks-ProjectStandards
 Birt development Guide - https://www.ibm.com/support/pages/system/files/inline-files/$FILE/Maximo76_Designer431_Report%20Development%20Guide_Rev8.pdf
 Birt course - https://learn.ibm.com/course/view.php?id=6407
 Get row count - https://stackoverflow.com/questions/29770655/birt-how-to-get-dataset-row-count-using-javascript - 0 rows -> -1 / 1 row -> 0 / 2 rows -> 1
+BIRT long description image bug - https://www.ibm.com/support/pages/adding-images-your-maximo%C2%AE-long-descriptions
