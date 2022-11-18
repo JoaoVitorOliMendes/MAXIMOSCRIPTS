@@ -13,3 +13,8 @@ Launch screen actions via script - https://www.ibm.com/mysupport/s/question/0D50
 Attribute launch point guide - https://www.ibm.com/support/pages/creating-automation-script-attribute-launch-point-maximo-76
 Parameter not showing value in custom message - Remove all words with unicode characters
 All maximo data types - https://bportaluri.com/2012/05/maximo-data-types.html / https://www.ibm.com/docs/en/mam/7.6.0?topic=rds-attribute-data-types
+Script to run report and save as attachment - https://bportaluri.com/2019/09/script-run-report-save-as-attachment.html
+Automate Printing and Storing Report on Server - https://www.ibm.com/mysupport/s/question/0D50z000060eRuRCAU/how-to-automate-printing-and-storing-report-on-server?language=en_US
+Run & Attach a Report to an email in maximo workflow - https://www.bpdzenith.com/wp-content/uploads/2020/02/MaxTECH-Run-Attach-a-Report-to-an-email-in-maximo-workflow-.pdf
+Execute BIRT Report And Send as PDF Attachment - https://www.ibm.com/mysupport/s/question/0D50z000060eKjKCAU/need-an-automation-script-to-execute-birt-report-and-send-as-pdf-attachment-in-email?language=en_US
+How to run BIRT report from Java class - http://www.anjadev.com/all/ibm_maximo_custom/how-to-run-birt-report-from-java-class/
