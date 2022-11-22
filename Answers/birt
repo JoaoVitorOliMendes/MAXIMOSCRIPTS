@@ -6,3 +6,4 @@ Birt development Guide - https://www.ibm.com/support/pages/system/files/inline-f
 Birt course - https://learn.ibm.com/course/view.php?id=6407
 Get row count - https://stackoverflow.com/questions/29770655/birt-how-to-get-dataset-row-count-using-javascript - 0 rows -> -1 / 1 row -> 0 / 2 rows -> 1
 BIRT long description image bug - https://www.ibm.com/support/pages/adding-images-your-maximo%C2%AE-long-descriptions
+Scripted data set - https://dzone.com/articles/eclipses-birt-scripted-data / https://narinderkumar.wordpress.com/2010/09/12/using-scripted-data-sources-in-birt-and-deploying-in-application-server/
