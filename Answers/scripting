@@ -20,3 +20,4 @@ Execute BIRT Report And Send as PDF Attachment - https://www.ibm.com/mysupport/s
 How to run BIRT report from Java class - http://www.anjadev.com/all/ibm_maximo_custom/how-to-run-birt-report-from-java-class/
 MBOConstants - https://bportaluri.com/wp-content/MaximoJavaDocs76/constant-values.html
 Test script - https://www.maximoscripting.com/testing-automation-scripts-with-the-new-maximo-7-6-testscript-method-part-1-mbo-based-scripts/
+Duplicate & AfterDuplicate - https://ibm-maximo-dev.github.io/maximo-autoscript-documentation/objectscripts/duplicateobject/
