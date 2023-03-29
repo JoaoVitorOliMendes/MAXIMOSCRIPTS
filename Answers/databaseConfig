@@ -1,1 +1,2 @@
 Ensure field uniqueness - https://www.ibm.com/support/pages/node/388227 https://bportaluri.com/2020/01/asset-unique-serial-number.html
+DO NOT create YORN fields in big tables like WorkOrder, dbConfig is going to take too much long
