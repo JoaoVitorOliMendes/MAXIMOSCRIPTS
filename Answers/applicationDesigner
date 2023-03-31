@@ -22,3 +22,4 @@ Add worklog to app - https://a3jgroup.com/2018/09/20/add-work-log-functionality-
 Labels explained - https://bportaluri.com/2012/11/maximo-application-labels-explained.html
 Change find attribute - https://www.ibm.com/support/pages/change-find-field-attribute-application
 Add images - https://maximosecrets.com/2020/08/03/item-images/
+Go to applications only work if attribute is part of Primary key
