@@ -1,3 +1,11 @@
+Maximo's REST API (aka JSON API, OSLC API) IBM Useful links - https://community.ibm.com/community/user/asset-facilities/viewdocument/maximos-rest-api-aka-json-api-os?CommunityKey=694bff06-15c7-45df-abbe-bb8ae2126113
+
+
 MxLoader - https://bportaluri.com/mxloader / https://www.ibm.com/support/pages/how-secure-mxloader / https://www.youtube.com/watch?v=77_dyhIyGXE
 Build Maximo EAR - https://www.ibm.com/support/pages/rebuilding-and-redeploying-maximo-ear-files
 Integration - https://bportaluri.com/integration-framework
+Security in the REST API - https://www.ibm.com/docs/sl/mam/7.6.0?topic=ra-security-in-rest-api
+Querying Maximo using the REST and JSON APIs A3J - https://a3jgroup.com/2018/11/01/querying-maximo-using-the-rest-and-json-apis/
+API Authentications - https://maximodeploy.blogspot.com/2021/02/rest-oslc-api-authentications-native-or.html
+ApiKey with meaweb/es - https://community.ibm.com/community/user/asset-facilities/discussion/using-api-key-with-meawebes
+Configuring Maximo - https://docs.iconics.com/V10.97/GENESIS64/Help/Apps/WBDT/Connected_Field_Worker/Configuring_Maximo.htm
