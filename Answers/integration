@@ -13,3 +13,5 @@ NextGen - https://jackyqiubao.medium.com/introduction-of-maximo-nextgen-rest-api
 WebService timeout - https://www.ibm.com/support/pages/posting-data-maximo-web-services-through-ihs-may-time-out
 WebService integration - https://bportaluri.com/2012/09/maximo-integration-framework-web-service-tutorial.html
 Rest - https://github.com/anamitrab/maximorestguide/blob/main/Maximo_Nextgen_REST_API.pdf
+
+Object Service - https://www.ibm.com/docs/en/mam/7.6.0?topic=cs-object-structure-services / https://bportaluri.com/2012/08/maximo-integration-framework-object-structure-service-http-tutorial.html
