@@ -41,3 +41,4 @@ Loop throught MBO - https://maximoinsights.com/2023/01/09/how-to-loop-through-a-
 Attribute order - https://maximoinsights.com/2023/01/03/typical-order-of-execution-in-maximo-attributes/
 Maximo automation scripting - https://github.com/ibm-maximo-dev/maximo-scripting/tree/master
 MBOset leaks - https://www.linkedin.com/pulse/how-can-discardable-mboset-help-avoid-memory-leaks-mark-robbins/ https://www.linkedin.com/pulse/using-discardable-mbosets-maximo-automation-scripts-chrisman/
+MBO discardable
