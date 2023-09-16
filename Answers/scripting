@@ -1,5 +1,6 @@
 Scripting Guide - https://ibm-maximo-dev.github.io/maximo-autoscript-documentation/
 
+Scripting guides - https://www.ibm.com/support/pages/node/1129323?myns=swgtiv&mynp=OCSSLKT6&mync=R&cm_sp=swgtiv-_-OCSSLKT6-_-R
 Scripting tips - https://community.ibm.com/community/user/asset-facilities/viewdocument/maximo-business-object-development?CommunityKey=3d7261ae-48f7-481d-b675-a40eb407e0fd&tab=librarydocuments
 Implicit vars - https://www.ibm.com/docs/en/maximo-eam-saas?topic=scripts-implicit-variables
 Mbo Constants - https://ibm-maximo-dev.github.io/maximo-autoscript-documentation/coreconcepts/mboconstants/
@@ -41,4 +42,4 @@ Loop throught MBO - https://maximoinsights.com/2023/01/09/how-to-loop-through-a-
 Attribute order - https://maximoinsights.com/2023/01/03/typical-order-of-execution-in-maximo-attributes/
 Maximo automation scripting - https://github.com/ibm-maximo-dev/maximo-scripting/tree/master
 MBOset leaks - https://www.linkedin.com/pulse/how-can-discardable-mboset-help-avoid-memory-leaks-mark-robbins/ https://www.linkedin.com/pulse/using-discardable-mbosets-maximo-automation-scripts-chrisman/
-MBO discardable
+MBO discardable - https://www.ibm.com/support/pages/node/7028167
