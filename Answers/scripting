@@ -45,3 +45,6 @@ Maximo automation scripting - https://github.com/ibm-maximo-dev/maximo-scripting
 MBOset leaks - https://www.linkedin.com/pulse/how-can-discardable-mboset-help-avoid-memory-leaks-mark-robbins/ https://www.linkedin.com/pulse/using-discardable-mbosets-maximo-automation-scripts-chrisman/
 MBO discardable - https://www.ibm.com/support/pages/node/7028167
 MBO Download - https://moremaximo.com/question/result-set-in-the-application-is-not-downloading-successfully-though-the-result-set-returns-records
+UI Scripts - https://www.linkedin.com/pulse/ibm-mas-manage-ui-bean-scripting-andrzej-wieclaw-4vtbf/
+OLD UI methods - https://bportaluri.com/2022/12/accessing-ui-methods-from-automation-scripts.html
+Dialog interaction = https://ibm-maximo-dev.github.io/maximo-autoscript-documentation/uiscripting/dialoginteraction/
